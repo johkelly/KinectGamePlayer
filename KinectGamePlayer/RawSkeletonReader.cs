@@ -26,6 +26,7 @@ namespace CSCI598.Proj3
             {
                 sensor.SkeletonStream.Enable();
                 sensor.SkeletonFrameReady += handleSkeletonFrame;
+                sensor.Start();
             }
         }
 

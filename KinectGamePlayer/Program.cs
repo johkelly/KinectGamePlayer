@@ -16,16 +16,14 @@ namespace CSCI598.Proj3
         {
             HistogramSharePoint hsp = new HistogramSharePoint();
             SVMKeyboardTriggerer trigger = new SVMKeyboardTriggerer(hsp);
+            RawSkeletonReader reader = new RawSkeletonReader();
+            SkeletonFrameWindowProcessor proc = new SkeletonFrameWindowProcessor(hsp);
+            reader.rawSkeletonReady += proc.handleNewSkeleton;
             Thread t = new Thread(trigger.run);
             t.Start();
             Random r = new Random();
             while (true)
             {
-                hsp.histBatch = new List<Histogram>();
-                if (r.Next(10) < 5)
-                {
-                    hsp.histBatch = null;
-                }
             }
         }
     }
