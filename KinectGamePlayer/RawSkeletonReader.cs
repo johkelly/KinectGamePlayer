@@ -12,7 +12,7 @@ namespace CSCI598.Proj3
         private KinectSensor sensor;
 
         public event EventHandler<Skeleton> rawSkeletonReady;
-        private int currentPlayerId;
+        private int currentPlayerId = -1;
 
         public RawSkeletonReader()
         {
@@ -46,11 +46,11 @@ namespace CSCI598.Proj3
                         // Find the skeleton of the player being tracked
                         foreach (Skeleton s in skeletons)
                         {
-                            if (currentPlayerId == -1 && s.TrackingId != -1)
+                            if (currentPlayerId == -1 && s.TrackingState == SkeletonTrackingState.Tracked)
                             {
                                 currentPlayerId = s.TrackingId;
                             }
-                            if (s.TrackingId == currentPlayerId)
+                            if (s.TrackingState == SkeletonTrackingState.Tracked &&  s.TrackingId == currentPlayerId)
                             {
                                 rawSkeletonReady(this, s);
                                 return;
