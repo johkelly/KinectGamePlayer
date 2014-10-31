@@ -54,6 +54,7 @@ namespace HistogrammerRunner
                 }
                 trainingFile.WriteLine(c + " " + builder.ToString());
             }
+            trainingFile.Close();
             System.Console.ReadKey(true);
         }
     }

@@ -24,12 +24,12 @@ namespace CSCI598.Proj3
         {
             List<Histogram> temp = null;
             List<Histogram> hb;
-            while (true)
-            {
-               hb = hsp.histBatch;
-                System.Console.WriteLine((hb == null ? "null" : hb.ToString()));
-                Thread.Sleep(500);
-            }
+            //while (true)
+            //{
+            //   hb = hsp.histBatch;
+            //    System.Console.WriteLine((hb == null ? "null" : hb.ToString()));
+            //    Thread.Sleep(500);
+            //}
             SVMProblem problem = SVMProblemHelper.Load(@"dataset_path.txt");
 
             SVMParameter parameter = new SVMParameter();
