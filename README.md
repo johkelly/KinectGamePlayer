@@ -7,7 +7,7 @@ Callback Function with raw skeleton data -> Raw Queue
 
 Raw Queue -> Skeleton representation
 
-Skeleton representation -(historgram library)-> histogrammed array
+Skeleton representation -(histogram library)-> histogrammed array
 
 ^John^ ----  vNathanv
 
