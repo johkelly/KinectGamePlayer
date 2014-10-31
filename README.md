@@ -19,6 +19,9 @@ class -> Event trigger
 
 
 Thread Diagram:
+
 Parent: (Feeds each a shared memory address)
+
 |       \
+
 John    Nathan`
