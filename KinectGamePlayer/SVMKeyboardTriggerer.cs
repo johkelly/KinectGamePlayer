@@ -59,10 +59,10 @@ namespace CSCI598.Proj3
                         }
                     }
                     double y = SVM.Predict(model, nodes.ToArray());
-                    System.Console.WriteLine("" + eventTrigger[(int)y]);
+                    //System.Console.WriteLine("" + eventTrigger[(int)y]);
                     if (y!=0)
                     {
-                      //  System.Windows.Forms.SendKeys.Send(""+eventTrigger[(int)y]);
+                        System.Windows.Forms.SendKeys.SendWait(""+eventTrigger[(int)y]);
                     }
 
                     
