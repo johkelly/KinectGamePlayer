@@ -37,7 +37,7 @@ namespace CSCI598.Proj3
             parameter.Kernel = SVMKernelType.RBF;
             parameter.C = 1;
             parameter.Gamma = 1;
-            char[] eventTrigger = {'x', 'y', 'z', 'c', 'v'};
+            char[] eventTrigger = {'0', 'x', 'y', 'z', 'c', 'v'};
             
             SVMModel model = SVM.Train(problem, parameter);
             while(true)
@@ -59,10 +59,10 @@ namespace CSCI598.Proj3
                         }
                     }
                     double y = SVM.Predict(model, nodes.ToArray());
-                    System.Console.WriteLine(y);
+                    System.Console.WriteLine("" + eventTrigger[(int)y]);
                     if (y!=0)
                     {
-                        System.Windows.Forms.SendKeys.Send(""+eventTrigger[(int)y]);
+                      //  System.Windows.Forms.SendKeys.Send(""+eventTrigger[(int)y]);
                     }
 
                     
