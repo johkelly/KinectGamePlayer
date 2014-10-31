@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
+
 namespace CSCI598.Proj3
 {
     class SVMKeyboardTriggerer
@@ -36,7 +37,8 @@ namespace CSCI598.Proj3
             parameter.Kernel = SVMKernelType.RBF;
             parameter.C = 1;
             parameter.Gamma = 1;
-
+            char[] eventTrigger = {'x', 'y', 'z', 'c', 'v'};
+            
             SVMModel model = SVM.Train(problem, parameter);
             while(true)
             {
@@ -58,6 +60,14 @@ namespace CSCI598.Proj3
                     }
                     double y = SVM.Predict(model, nodes.ToArray());
                     System.Console.WriteLine(y);
+                    if (y!=0)
+                    {
+                        System.Windows.Forms.SendKeys.Send(""+eventTrigger[(int)y]);
+                    }
+
+                    
+
+
                 }
             }
 
