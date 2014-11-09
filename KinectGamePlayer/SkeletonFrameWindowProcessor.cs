@@ -11,7 +11,7 @@ namespace CSCI598.Proj3
 {
     public class SkeletonFrameWindowProcessor
     {
-        private const int WINDOW_SIZE = 10;
+        private const int WINDOW_SIZE = 50;
         private List<Skeleton> skeletons = new List<Skeleton>(WINDOW_SIZE);
         private HistogramSharePoint hsp;
         private SkeletonHistogrammer histogrammer;
@@ -19,8 +19,14 @@ namespace CSCI598.Proj3
         public SkeletonFrameWindowProcessor(HistogramSharePoint hsp)
         {
             this.hsp = hsp;
-            // TODO: Get histogram bounds from file
-            this.histogrammer = new HJPDSkeletonHistogrammer(null);
+            string[] binDefLines = System.IO.File.ReadAllLines(@"dataset_bounds_path.txt");
+            SortedDictionary<JointType, Tuple<double, int, double>> binDefinitions = new SortedDictionary<JointType, Tuple<double, int, double>>();
+            foreach (string binDef in binDefLines)
+            {
+                string[] vals = binDef.Split();
+                binDefinitions[(JointType)int.Parse(vals[0])] = new Tuple<double, int, double>(double.Parse(vals[1]), int.Parse(vals[2]), double.Parse(vals[3]));
+            }
+            this.histogrammer = new HJPDSkeletonHistogrammer(binDefinitions);
         }
 
         public void handleNewSkeleton(object sender, Microsoft.Kinect.Skeleton e)
