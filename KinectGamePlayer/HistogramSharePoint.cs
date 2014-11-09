@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace CSCI598.Proj3
 {
-    class HistogramSharePoint
+    public class HistogramSharePoint
     {
         private Object ListLocker = new Object();
 

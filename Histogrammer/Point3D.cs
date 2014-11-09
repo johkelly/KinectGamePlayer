@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Histogrammer
+namespace CSCI598.Proj3.Histogrammer
 {
     class Point3D
     {
