@@ -11,7 +11,7 @@ namespace CSCI598.Proj3.Histogrammer
     public class HJPDSkeletonHistogrammer : SkeletonHistogrammer
     {
         private const int HJPD_BIN_COUNT = 20;
-        // (Lower bound, number of bins, upper bound)
+
         public SortedDictionary<JointType, BinDefinition> binDefinitions { get; set; }
 
         public HJPDSkeletonHistogrammer(SortedDictionary<JointType, BinDefinition> binDefinitions)

@@ -12,19 +12,35 @@ namespace CSCI598.Proj3.Histogrammer
         public double Y { get; set; }
         public double Z { get; set; }
 
-
-        internal Point3D difference(Point3D other)
+        public Point3D(double x, double y, double z)
         {
-            return new Point3D {
-                X = this.X - other.X,
-                Y = this.Y - other.Y,
-                Z = this.Z - other.Z
-            };
+            X = x;
+            Y = y;
+            Z = z;
         }
 
-        internal double magnitude()
+        public Point3D difference(Point3D other)
+        {
+            return new Point3D(
+                this.X - other.X,
+                this.Y - other.Y,
+                this.Z - other.Z
+            );
+        }
+
+
+
+        public double magnitude()
         {
             return Math.Sqrt(X * X + Y * Y + Z * Z);
+        }
+
+        public double angleMadeWith(Point3D left, Point3D right)
+        {
+            Point3D leftLeg = left.difference(this);
+            Point3D rightLeg = right.difference(this);
+            double angle = Math.Acos(leftLeg.X * rightLeg.X + leftLeg.Y * rightLeg.Y + leftLeg.Z * rightLeg.Z) / (leftLeg.magnitude() * rightLeg.magnitude());
+            return (angle == double.NaN ? 0 : angle);
         }
     }
 }
