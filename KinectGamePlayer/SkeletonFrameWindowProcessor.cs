@@ -11,7 +11,7 @@ namespace CSCI598.Proj3
 {
     public class SkeletonFrameWindowProcessor
     {
-        private const int WINDOW_SIZE = 50;
+        public const int WINDOW_SIZE = 50;
         private List<Skeleton> skeletons = new List<Skeleton>(WINDOW_SIZE);
         private HistogramSharePoint hsp;
         private SkeletonHistogrammer histogrammer;

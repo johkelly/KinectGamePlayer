@@ -35,9 +35,10 @@ namespace CSCI598.Proj3
             SVMParameter parameter = new SVMParameter();
             parameter.Type = SVMType.C_SVC;
             parameter.Kernel = SVMKernelType.RBF;
-            parameter.C = 1;
-            parameter.Gamma = 1;
-            char[] eventTrigger = {'0', 'x', 'y', 'z', 'c', 'v'};
+            parameter.C = 9.84915530676;
+            parameter.Gamma = 0.0078125;
+            string[] eventTrigger = { "standing", "leftShoulder", "rightShoulder", "leftHip", "rightHip" };
+            //char[] eventTrigger = {'s', 'l', 'L', 's', 'S', 'h', 'H', 'f', 'b'};
             
             SVMModel model = SVM.Train(problem, parameter);
             while(true)
@@ -47,22 +48,27 @@ namespace CSCI598.Proj3
                     temp = hb;
                     int count = 1;
                     List<SVMNode> nodes = new List<SVMNode>();
-                    for (int i = 1; i < temp.Count; i++)
+                    for (int i = 0; i < temp.Count; i++)
                     {
                         Histogram histObject = temp[i];
-                        for (int j = 1; j < histObject.BucketCount; j++)
+                        for (int j = 0; j < histObject.BucketCount; j++)
                         {
                             SVMNode node = new SVMNode();
                             node.Index = count++;
-                            node.Value = histObject[j].Count;
+                            node.Value = histObject[j].Count/SkeletonFrameWindowProcessor.WINDOW_SIZE;
                             nodes.Add(node);
                         }
                     }
                     double y = SVM.Predict(model, nodes.ToArray());
-                    //System.Console.WriteLine("" + eventTrigger[(int)y]);
-                    if (y!=0)
+                    System.Console.WriteLine("" + eventTrigger[(int)y]);
+                    //for (int i = 0; i < nodes.Count; ++i)
+                    //{
+                    //    System.Console.Write(i + ":" + nodes[i].Value + " ");
+                    //}
+                    //System.Console.WriteLine("");
+                    if (true)
                     {
-                        System.Windows.Forms.SendKeys.SendWait(""+eventTrigger[(int)y]);
+                        //System.Windows.Forms.SendKeys.SendWait("" + eventTrigger[(int)y]);
                     }
 
                     
