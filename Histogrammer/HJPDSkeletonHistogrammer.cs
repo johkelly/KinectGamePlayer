@@ -10,16 +10,64 @@ namespace CSCI598.Proj3.Histogrammer
 {
     public class HJPDSkeletonHistogrammer : SkeletonHistogrammer
     {
-        private int HJPD_BIN_COUNT = 20;
+        private const int HJPD_BIN_COUNT = 20;
         // (Lower bound, number of bins, upper bound)
-        public SortedDictionary<JointType, Tuple<double, int, double>> binDefinitions { get; set; }
+        public SortedDictionary<JointType, BinDefinition> binDefinitions { get; set; }
 
-        public HJPDSkeletonHistogrammer(SortedDictionary<JointType, Tuple<double, int, double>> binDefinitions)
+        public HJPDSkeletonHistogrammer(SortedDictionary<JointType, BinDefinition> binDefinitions)
         {
             this.binDefinitions = binDefinitions;
         }
 
-        private Dictionary<JointType, List<double>> prepareData(List<Skeleton> skeletons)
+        public static SortedDictionary<JointType, BinDefinition> binDefinitionsFor(List<List<Skeleton>> skeletonBatch)
+        {
+            SortedDictionary<JointType, BinDefinition> binDefinitions = null;
+            foreach (List<Skeleton> skeletons in skeletonBatch)
+            {
+                SortedDictionary<JointType, BinDefinition> binDefs = new SortedDictionary<JointType, BinDefinition>();
+                foreach (var dataset in prepareData(skeletons))
+                {
+                    BinDefinition binDef = new BinDefinition();
+                    binDef.lowerBound = dataset.Value.Min();
+                    binDef.upperBound = dataset.Value.Max();
+                    binDef.numBins = HJPD_BIN_COUNT;
+                    binDefs[dataset.Key] = binDef;
+                }
+                if (binDefinitions == null)
+                {
+                    binDefinitions = binDefs;
+                }
+                else
+                {
+                    binDefinitions = combineDefinitions(binDefinitions, binDefs);
+                }
+            }
+            return binDefinitions;
+        }
+
+        public static SortedDictionary<JointType, BinDefinition> combineDefinitions(SortedDictionary<JointType, BinDefinition> left, SortedDictionary<JointType, BinDefinition> right)
+        {
+            if (!left.Keys.SequenceEqual(right.Keys))
+            {
+                throw new ArgumentException("Bin Definition maps disagree on the included joint types");
+            }
+            SortedDictionary<JointType, BinDefinition> retval = new SortedDictionary<JointType, BinDefinition>();
+            foreach (JointType key in left.Keys)
+            {
+                if (left[key].numBins != right[key].numBins)
+                {
+                    throw new ArgumentException("Bin Definition maps disagree on the number of bins for " + key);
+                }
+                BinDefinition binDef = new BinDefinition();
+                binDef.lowerBound = Math.Min(left[key].lowerBound, right[key].lowerBound);
+                binDef.upperBound = Math.Max(left[key].upperBound, right[key].upperBound);
+                binDef.numBins = left[key].numBins;
+                retval[key] = binDef;
+            }
+            return retval;
+        }
+
+        private static Dictionary<JointType, List<double>> prepareData(List<Skeleton> skeletons)
         {
             // Throw if no skeletons were received
             if (skeletons.Count == 0)
@@ -61,31 +109,9 @@ namespace CSCI598.Proj3.Histogrammer
             // Create a histogram for each joint, using the defined bin width and counts
             foreach (var binDefinition in binDefinitions)
             {
-                histograms.Add(new Histogram(data[binDefinition.Key].ToArray(), binDefinition.Value.Item2, binDefinition.Value.Item1, binDefinition.Value.Item3));
-            }
-            
-            return histograms;
-        }
-
-        public List<Histogram> processSkeletonsAndBounds(List<Skeleton> skeletons, out SortedDictionary<JointType, BinDefinition> binDefinitions)
-        {
-            Dictionary<JointType, List<double>> data = prepareData(skeletons);
-            binDefinitions = new SortedDictionary<JointType, BinDefinition>();
-            // Process the raw data for histogram bounds
-            foreach (var dataset in data)
-            {
-                BinDefinition binDef = new BinDefinition();
-                binDef.lowerBound = dataset.Value.Min();
-                binDef.upperBound = dataset.Value.Max();
-                binDef.numBins = HJPD_BIN_COUNT;
-            }
-            // Create a histogram for each joint, using the defined bin width and counts
-            List<Histogram> histograms = new List<Histogram>();
-            foreach (var binDefinition in binDefinitions)
-            {
                 histograms.Add(new Histogram(data[binDefinition.Key].ToArray(), binDefinition.Value.numBins, binDefinition.Value.lowerBound, binDefinition.Value.upperBound));
             }
-
+            
             return histograms;
         }
     }

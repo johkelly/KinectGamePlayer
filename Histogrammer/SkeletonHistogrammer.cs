@@ -8,6 +8,5 @@ namespace CSCI598.Proj3.Histogrammer
     public interface SkeletonHistogrammer
     {
         List<Histogram> processSkeletons(List<Skeleton> skeletons);
-        List<Histogram> processSkeletonsAndBounds(List<Skeleton> skeletons, out SortedDictionary<JointType, BinDefinition> binDefinitions);
     }
 }
