@@ -20,11 +20,21 @@ namespace CSCI598.Proj3
         {
             this.hsp = hsp;
             string[] binDefLines = System.IO.File.ReadAllLines(@"dataset_bounds_path.txt");
-            SortedDictionary<JointType, Tuple<double, int, double>> binDefinitions = new SortedDictionary<JointType, Tuple<double, int, double>>();
-            foreach (string binDef in binDefLines)
+            //SortedDictionary<JointType, Tuple<double, int, double>> binDefinitions = new SortedDictionary<JointType, Tuple<double, int, double>>();
+            //foreach (string binDef in binDefLines)
+            //{
+            //    string[] vals = binDef.Split();
+            //    binDefinitions[(JointType)int.Parse(vals[0])] = new Tuple<double, int, double>(double.Parse(vals[1]), int.Parse(vals[2]), double.Parse(vals[3]));
+            //}
+            SortedDictionary<JointType, BinDefinition> binDefinitions = new SortedDictionary<JointType, BinDefinition>();
+            foreach (string binDefLine in binDefLines)
             {
-                string[] vals = binDef.Split();
-                binDefinitions[(JointType)int.Parse(vals[0])] = new Tuple<double, int, double>(double.Parse(vals[1]), int.Parse(vals[2]), double.Parse(vals[3]));
+                string[] vals = binDefLine.Split();
+                BinDefinition binDef = new BinDefinition();
+                binDef.lowerBound = double.Parse(vals[1]);
+                binDef.numBins = int.Parse(vals[2]);
+                binDef.upperBound = double.Parse(vals[3]);
+                binDefinitions[(JointType)int.Parse(vals[0])] = binDef;
             }
             this.histogrammer = new HJPDSkeletonHistogrammer(binDefinitions);
         }
