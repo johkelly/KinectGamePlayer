@@ -1,5 +1,6 @@
 ﻿using MathNet.Numerics.Statistics;
 using Microsoft.Kinect;
+using System;
 using System.Collections.Generic;
 
 namespace CSCI598.Proj3.Histogrammer
@@ -7,5 +8,6 @@ namespace CSCI598.Proj3.Histogrammer
     public interface SkeletonHistogrammer
     {
         List<Histogram> processSkeletons(List<Skeleton> skeletons);
+        List<Histogram> processSkeletonsAndBounds(List<Skeleton> skeletons, out SortedDictionary<JointType, BinDefinition> binDefinitions);
     }
 }

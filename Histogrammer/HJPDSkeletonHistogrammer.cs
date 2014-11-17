@@ -10,6 +10,7 @@ namespace CSCI598.Proj3.Histogrammer
 {
     public class HJPDSkeletonHistogrammer : SkeletonHistogrammer
     {
+        private int HJPD_BIN_COUNT = 20;
         // (Lower bound, number of bins, upper bound)
         public SortedDictionary<JointType, Tuple<double, int, double>> binDefinitions { get; set; }
 
@@ -18,35 +19,45 @@ namespace CSCI598.Proj3.Histogrammer
             this.binDefinitions = binDefinitions;
         }
 
-        public List<Histogram> processSkeletons(List<Microsoft.Kinect.Skeleton> skeletons)
+        private Dictionary<JointType, List<double>> prepareData(List<Skeleton> skeletons)
         {
             // Throw if no skeletons were received
             if (skeletons.Count == 0)
             {
                 throw new ArgumentException("No skeletons were received - cannot process nothing");
             }
-            // Prepare empty hisotgrams
-            List<Histogram> histograms = new List<Histogram>();
             // Prepare empty lists to organize distances by joint
-            Dictionary<JointType, List<double>> data = new Dictionary<JointType,List<double>>();
+            Dictionary<JointType, List<double>> data = new Dictionary<JointType, List<double>>();
             foreach (JointType j in Enum.GetValues(typeof(JointType)))
             {
                 data[j] = new List<double>();
             }
             // Process each joint in each skeleton frame
-            foreach (Skeleton s in skeletons) {
+            foreach (Skeleton s in skeletons)
+            {
                 SkeletonPoint center = s.Joints[JointType.HipCenter].Position;
-                foreach (Joint j in s.Joints) {
-                    if (data[j.JointType] == null) {
+                foreach (Joint j in s.Joints)
+                {
+                    if (data[j.JointType] == null)
+                    {
                         data[j.JointType] = new List<double>();
                     }
                     SkeletonPoint pos = j.Position;
                     double dx = Math.Pow(pos.X - center.X, 2);
                     double dy = Math.Pow(pos.Y - center.Y, 2);
                     double dz = Math.Pow(pos.Z - center.Z, 2);
-                    data[j.JointType].Add(Math.Sqrt(dx*dx + dy*dy + dz*dz));
+                    data[j.JointType].Add(Math.Sqrt(dx * dx + dy * dy + dz * dz));
                 }
             }
+            return data;
+        }
+
+        public List<Histogram> processSkeletons(List<Microsoft.Kinect.Skeleton> skeletons)
+        {
+            // Prepare empty hisotgrams
+            List<Histogram> histograms = new List<Histogram>();
+            // Get raw data
+            Dictionary<JointType, List<double>> data = prepareData(skeletons);
             // Create a histogram for each joint, using the defined bin width and counts
             foreach (var binDefinition in binDefinitions)
             {
@@ -56,5 +67,26 @@ namespace CSCI598.Proj3.Histogrammer
             return histograms;
         }
 
+        public List<Histogram> processSkeletonsAndBounds(List<Skeleton> skeletons, out SortedDictionary<JointType, BinDefinition> binDefinitions)
+        {
+            Dictionary<JointType, List<double>> data = prepareData(skeletons);
+            binDefinitions = new SortedDictionary<JointType, BinDefinition>();
+            // Process the raw data for histogram bounds
+            foreach (var dataset in data)
+            {
+                BinDefinition binDef = new BinDefinition();
+                binDef.lowerBound = dataset.Value.Min();
+                binDef.upperBound = dataset.Value.Max();
+                binDef.numBins = HJPD_BIN_COUNT;
+            }
+            // Create a histogram for each joint, using the defined bin width and counts
+            List<Histogram> histograms = new List<Histogram>();
+            foreach (var binDefinition in binDefinitions)
+            {
+                histograms.Add(new Histogram(data[binDefinition.Key].ToArray(), binDefinition.Value.numBins, binDefinition.Value.lowerBound, binDefinition.Value.upperBound));
+            }
+
+            return histograms;
+        }
     }
 }
