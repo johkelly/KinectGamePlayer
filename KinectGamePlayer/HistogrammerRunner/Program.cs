@@ -24,29 +24,29 @@ namespace HistogrammerRunner
                 System.Console.WriteLine("Read: " + iFile);
                 List<Skeleton> skeletons = SkeletonListSerializer.makeFromeFile(iFile);
                 allSkeletons.Add(skeletons);  
-                if (iFile.Contains("Default"))
+                if (iFile.Contains("Norm"))
                 {
                     classes.Add(0);
                 }
-                else if (iFile.Contains("Left"))
+                else if (iFile.Contains("LShoulder"))
                 {
                     classes.Add(1);
                 }
-                else if (iFile.Contains("Right"))
+                else if (iFile.Contains("RShoulder"))
                 {
                     classes.Add(2);
                 }
                 else if (iFile.Contains("LHip"))
                 {
-                    classes.Add(4);
+                    classes.Add(3);
                 }
                 else if (iFile.Contains("RHip"))
                 {
-                    classes.Add(5);
+                    classes.Add(4);
                 }
-                else if (iFile.Contains("Push"))
+                else
                 {
-                    classes.Add(6);
+                    System.Console.WriteLine("Missed " + iFile);
                 }
             }
 
@@ -74,9 +74,14 @@ namespace HistogrammerRunner
                 StringBuilder builder = new StringBuilder();
                 foreach (Histogram h in histograms)
                 {
+                    double frameCount = 0;
                     for (int i = 0; i < h.BucketCount; ++i)
                     {
-                        builder.Append(attribute.ToString() + ":" + h[i].Count + " ");
+                        frameCount += h[i].Count;
+                    }
+                    for (int i = 0; i < h.BucketCount; ++i)
+                    {
+                        builder.Append(attribute.ToString() + ":" + h[i].Count/frameCount + " ");
                         ++attribute;
                     }
                 }
