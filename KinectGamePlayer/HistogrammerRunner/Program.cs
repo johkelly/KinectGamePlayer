@@ -18,7 +18,6 @@ namespace HistogrammerRunner
             // Assemble empty skeleton data and histogram data containers with default values
             List<List<Skeleton>> allSkeletons = new List<List<Skeleton>>();
             List<int> classes = new List<int>();
-            SortedDictionary<JointType, BinDefinition> binDefinitions;
             foreach (string iFile in Directory.GetFiles("data", "*.txt"))
             {
                 System.Console.WriteLine("Read: " + iFile);
@@ -50,6 +49,49 @@ namespace HistogrammerRunner
                 }
             }
 
+            SortedDictionary<JointType, BinDefinition> binDefinitions;
+            List<List<Histogram>> histograms;
+            makeHistogramsWithHJPD(allSkeletons, out histograms, out binDefinitions);
+
+            // Write the histogram bounds to a file
+            StreamWriter boundsFile = new StreamWriter("train.bounds.txt");
+            foreach (var binDef in binDefinitions)
+            {
+                boundsFile.WriteLine((int)binDef.Key + " " + binDef.Value.lowerBound + " " + binDef.Value.numBins + " " + binDef.Value.upperBound);
+            }
+            System.Console.WriteLine("Wrote training bounds");
+            boundsFile.Close();
+
+            // Write the histogram attributes to a file
+            StreamWriter trainingFile = new StreamWriter("train.txt");
+            for (int instnum = 0; instnum < allSkeletons.Count; ++instnum)
+            {
+                int attribute = 1;
+                StringBuilder builder = new StringBuilder();
+                foreach (Histogram h in histograms[instnum])
+                {
+                    double frameCount = 0;
+                    for (int i = 0; i < h.BucketCount; ++i)
+                    {
+                        frameCount += h[i].Count;
+                    }
+                    for (int i = 0; i < h.BucketCount; ++i)
+                    {
+                        builder.Append(attribute.ToString() + ":" + h[i].Count / frameCount + " ");
+                        ++attribute;
+                    }
+                }
+                trainingFile.WriteLine(classes[instnum].ToString() + " " + builder.ToString());
+            }
+            System.Console.WriteLine("Wrote training file");
+            trainingFile.Close();
+
+            System.Console.ReadKey(true);
+        }
+
+        private static void makeHistogramsWithHJPD(List<List<Skeleton>> allSkeletons, out List<List<Histogram>> histograms, out SortedDictionary<JointType, BinDefinition> binDefinitions)
+        {
+            histograms = new List<List<Histogram>>();
             binDefinitions = HJPDSkeletonHistogrammer.binDefinitionsFor(allSkeletons);
             // Adjust the lower and upper bounds by a very small amount because Math.Net will throw an exception
             // when a Histogram is constructed with explicit data and bounds where a data value is precisely
@@ -62,43 +104,29 @@ namespace HistogrammerRunner
                 binDefinitions[j] = binDef;
             }
             SkeletonHistogrammer histogrammer = new HJPDSkeletonHistogrammer(binDefinitions);
-            StreamWriter trainingFile = new StreamWriter("train.txt");
             for (int instNum = 0; instNum < allSkeletons.Count; ++instNum)
             {
-                int attribute = 1;
                 if (allSkeletons[instNum].Count == 0)
                 {
                     continue;
                 }
-                List<Histogram> histograms = histogrammer.processSkeletons(allSkeletons[instNum]);
-                StringBuilder builder = new StringBuilder();
-                foreach (Histogram h in histograms)
-                {
-                    double frameCount = 0;
-                    for (int i = 0; i < h.BucketCount; ++i)
-                    {
-                        frameCount += h[i].Count;
-                    }
-                    for (int i = 0; i < h.BucketCount; ++i)
-                    {
-                        builder.Append(attribute.ToString() + ":" + h[i].Count/frameCount + " ");
-                        ++attribute;
-                    }
-                }
-                trainingFile.WriteLine(classes[instNum].ToString() + " " + builder.ToString());
+                histograms.Add(histogrammer.processSkeletons(allSkeletons[instNum]));
             }
-            System.Console.WriteLine("Wrote training file");
-            trainingFile.Close();
-            // Write the histogram bounds to a similar file
-            StreamWriter boundsFile = new StreamWriter("train.bounds.txt");
-            foreach (var binDef in binDefinitions)
-            {
-                boundsFile.WriteLine((int)binDef.Key + " " + binDef.Value.lowerBound + " " + binDef.Value.numBins + " " + binDef.Value.upperBound);
-            }
-            System.Console.WriteLine("Wrote training bounds");
-            boundsFile.Close();
+        }
 
-            System.Console.ReadKey(true);
+        private static void makeHistogramsWithRAD(List<List<Skeleton>> allSkeletons, List<JointType> jointList, out List<List<Histogram>> histograms, out List<BinDefinition> binDefinitions)
+        {
+            histograms = new List<List<Histogram>>();
+            binDefinitions = RADSkeletonHistogrammer.binDefinitionsFor(jointList, allSkeletons);
+            SkeletonHistogrammer histogrammer = new RADSkeletonHistogrammer(jointList, binDefinitions);
+            foreach (List<Skeleton> skeletons in allSkeletons)
+            {
+                if (skeletons.Count == 0)
+                {
+                    continue;
+                }
+                histograms.Add(histogrammer.processSkeletons(skeletons));
+            }
         }
     }
 }

@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace CSCI598.Proj3.Histogrammer
 {
-    class RADSkeletonHistogrammer : SkeletonHistogrammer
+    public class RADSkeletonHistogrammer : SkeletonHistogrammer
     {
         private const int RAD_BIN_COUNT = 20;
 
