@@ -49,17 +49,15 @@ namespace HistogrammerRunner
                 }
             }
 
-            SortedDictionary<JointType, BinDefinition> binDefinitions;
+            List<BinDefinition> binDefinitions;
             List<List<Histogram>> histograms;
-            makeHistogramsWithHJPD(allSkeletons, out histograms, out binDefinitions);
-
-            // Write the histogram bounds to a file
+            makeHistogramsWithRAD(allSkeletons, new List<JointType>() { JointType.ElbowRight, JointType.HandRight, JointType.Head, JointType.HandLeft, JointType.ElbowLeft }, out histograms, out binDefinitions);
             StreamWriter boundsFile = new StreamWriter("train.bounds.txt");
-            foreach (var binDef in binDefinitions)
+            for (int i = 0; i < binDefinitions.Count; ++i)
             {
-                boundsFile.WriteLine((int)binDef.Key + " " + binDef.Value.lowerBound + " " + binDef.Value.numBins + " " + binDef.Value.upperBound);
+                boundsFile.WriteLine(i + " " + binDefinitions[i].lowerBound + " " + binDefinitions[i].numBins + " " + binDefinitions[i].upperBound);
             }
-            System.Console.WriteLine("Wrote training bounds");
+            System.Console.WriteLine("Wrote bounds to file");
             boundsFile.Close();
 
             // Write the histogram attributes to a file
