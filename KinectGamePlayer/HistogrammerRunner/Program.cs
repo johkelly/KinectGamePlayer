@@ -51,7 +51,7 @@ namespace HistogrammerRunner
 
             List<BinDefinition> binDefinitions;
             List<List<Histogram>> histograms;
-            makeHistogramsWithRAD(allSkeletons, new List<JointType>() { JointType.ElbowRight, JointType.HandRight, JointType.Head, JointType.HandLeft, JointType.ElbowLeft }, out histograms, out binDefinitions);
+            makeHistogramsWithRAD(allSkeletons, RADSkeletonHistogrammer.DEFAULT_JOINT_LIST, out histograms, out binDefinitions);
             StreamWriter boundsFile = new StreamWriter("train.bounds.txt");
             for (int i = 0; i < binDefinitions.Count; ++i)
             {
@@ -116,6 +116,14 @@ namespace HistogrammerRunner
         {
             histograms = new List<List<Histogram>>();
             binDefinitions = RADSkeletonHistogrammer.binDefinitionsFor(jointList, allSkeletons);
+            // Adjust the lower and upper bounds by a very small amount because Math.Net will throw an exception
+            // when a Histogram is constructed with explicit data and bounds where a data value is precisely
+            // equal to a bound. Seriously, WTF.
+            foreach (BinDefinition binDef in binDefinitions)
+            {
+                binDef.lowerBound = binDef.lowerBound.Decrement();
+                binDef.upperBound = binDef.upperBound.Increment();
+            }
             SkeletonHistogrammer histogrammer = new RADSkeletonHistogrammer(jointList, binDefinitions);
             foreach (List<Skeleton> skeletons in allSkeletons)
             {

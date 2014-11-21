@@ -11,32 +11,15 @@ namespace CSCI598.Proj3
 {
     public class SkeletonFrameWindowProcessor
     {
-        public const int WINDOW_SIZE = 50;
-        private List<Skeleton> skeletons = new List<Skeleton>(WINDOW_SIZE);
+        public const int WINDOW_SIZE = 10;
+        private List<Skeleton> skeletons = new List<Skeleton>();
         private HistogramSharePoint hsp;
         private SkeletonHistogrammer histogrammer;
 
-        public SkeletonFrameWindowProcessor(HistogramSharePoint hsp)
+        public SkeletonFrameWindowProcessor(HistogramSharePoint hsp, SkeletonHistogrammer histogrammer)
         {
             this.hsp = hsp;
-            string[] binDefLines = System.IO.File.ReadAllLines(@"dataset_bounds_path.txt");
-            //SortedDictionary<JointType, Tuple<double, int, double>> binDefinitions = new SortedDictionary<JointType, Tuple<double, int, double>>();
-            //foreach (string binDef in binDefLines)
-            //{
-            //    string[] vals = binDef.Split();
-            //    binDefinitions[(JointType)int.Parse(vals[0])] = new Tuple<double, int, double>(double.Parse(vals[1]), int.Parse(vals[2]), double.Parse(vals[3]));
-            //}
-            SortedDictionary<JointType, BinDefinition> binDefinitions = new SortedDictionary<JointType, BinDefinition>();
-            foreach (string binDefLine in binDefLines)
-            {
-                string[] vals = binDefLine.Split();
-                BinDefinition binDef = new BinDefinition();
-                binDef.lowerBound = double.Parse(vals[1]);
-                binDef.numBins = int.Parse(vals[2]);
-                binDef.upperBound = double.Parse(vals[3]);
-                binDefinitions[(JointType)int.Parse(vals[0])] = binDef;
-            }
-            this.histogrammer = new HJPDSkeletonHistogrammer(binDefinitions);
+            this.histogrammer = histogrammer;
         }
 
         public void handleNewSkeleton(object sender, Microsoft.Kinect.Skeleton e)

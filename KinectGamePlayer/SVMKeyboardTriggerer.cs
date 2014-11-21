@@ -35,16 +35,16 @@ namespace CSCI598.Proj3
             SVMParameter parameter = new SVMParameter();
             parameter.Type = SVMType.C_SVC;
             parameter.Kernel = SVMKernelType.RBF;
-            parameter.C = 9.84915530676;
-            parameter.Gamma = 0.0078125;
+            parameter.C = 8;
+            parameter.Gamma = .03;
             string[] eventTrigger = { "standing", "leftShoulder", "rightShoulder", "leftHip", "rightHip" };
-            //char[] eventTrigger = {'s', 'l', 'L', 's', 'S', 'h', 'H', 'f', 'b'};
+            char[] eventTriggerC = {'s', 'l', 'r', 'L', 'R'};
             
             SVMModel model = SVM.Train(problem, parameter);
             while(true)
             {
                 hb = hsp.histBatch;
-                if (temp != hb){
+                if (temp != hb && hb != null){
                     temp = hb;
                     int count = 1;
                     List<SVMNode> nodes = new List<SVMNode>();
@@ -60,20 +60,16 @@ namespace CSCI598.Proj3
                         }
                     }
                     double y = SVM.Predict(model, nodes.ToArray());
-                    System.Console.WriteLine("" + eventTrigger[(int)y]);
+                    //System.Console.WriteLine("" + eventTrigger[(int)y]);
+                    System.Console.Title = eventTrigger[(int)y];
+
                     //for (int i = 0; i < nodes.Count; ++i)
                     //{
                     //    System.Console.Write(i + ":" + nodes[i].Value + " ");
                     //}
                     //System.Console.WriteLine("");
-                    if (true)
-                    {
-                        //System.Windows.Forms.SendKeys.SendWait("" + eventTrigger[(int)y]);
-                    }
 
-                    
-
-
+                    System.Windows.Forms.SendKeys.SendWait("" + eventTriggerC[(int)y]);
                 }
             }
 

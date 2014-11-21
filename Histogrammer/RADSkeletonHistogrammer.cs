@@ -10,7 +10,8 @@ namespace CSCI598.Proj3.Histogrammer
 {
     public class RADSkeletonHistogrammer : SkeletonHistogrammer
     {
-        private const int RAD_BIN_COUNT = 20;
+        public const int RAD_BIN_COUNT = 20;
+        public static readonly List<JointType> DEFAULT_JOINT_LIST = new List<JointType>() { JointType.ElbowRight, JointType.HandRight, JointType.Head, JointType.HandLeft, JointType.ElbowLeft };
 
         public List<BinDefinition> binDefinitions { get; set; }
         public List<JointType> jointList { get; set; }
@@ -36,8 +37,8 @@ namespace CSCI598.Proj3.Histogrammer
                 }
                 for (int i = 0; i < jointList.Count; ++i)
                 {
-                    data[i].Add(centerPoint.difference(points[i]).magnitude());
-                    data[i + 1].Add(centerPoint.angleMadeWith(points[i], points[(i + 1) % jointList.Count]));
+                    data[2*i].Add(centerPoint.difference(points[i]).magnitude());
+                    data[2*i + 1].Add(centerPoint.angleMadeWith(points[i], points[(i + 1) % jointList.Count]));
                 }
             }
             return data;
@@ -48,17 +49,25 @@ namespace CSCI598.Proj3.Histogrammer
             List<BinDefinition> binDefinitions = new List<BinDefinition>();
             for (int i = 0; i < jointList.Count; ++i)
             {
-                BinDefinition extremeBinDef = new BinDefinition();
-                extremeBinDef.lowerBound = double.MaxValue;
-                extremeBinDef.upperBound = double.MinValue;
-                extremeBinDef.numBins = RAD_BIN_COUNT;
-                binDefinitions.Add(extremeBinDef);
-                binDefinitions.Add(extremeBinDef);
+                BinDefinition extremeBinDef1 = new BinDefinition()
+                {
+                    lowerBound = double.MaxValue,
+                    upperBound = double.MinValue,
+                    numBins = RAD_BIN_COUNT
+                };
+                binDefinitions.Add(extremeBinDef1);
+                BinDefinition extremeBinDef2 = new BinDefinition()
+                {
+                    lowerBound = double.MaxValue,
+                    upperBound = double.MinValue,
+                    numBins = RAD_BIN_COUNT
+                };
+                binDefinitions.Add(extremeBinDef2);
             }
             foreach (List<Skeleton> skeletons in skeletonBatch)
             {
                 List<List<double>> data = prepareData(jointList, skeletons);
-                for (int i = 0; i < jointList.Count; ++i) {
+                for (int i = 0; i < binDefinitions.Count; ++i) {
                     BinDefinition binDef = binDefinitions[i];
                     binDef.lowerBound = Math.Min(binDef.lowerBound, data[i].Min());
                     binDef.upperBound = Math.Max(binDef.upperBound, data[i].Max());
@@ -78,9 +87,17 @@ namespace CSCI598.Proj3.Histogrammer
         {
             List<List<double>> data = prepareData(jointList, skeletons);
             List<Histogram> histograms = new List<Histogram>();
-            for (int i = 0; i < jointList.Count; ++i)
+            for (int i = 0; i < binDefinitions.Count; ++i)
             {
-                histograms.Add(new Histogram(data[i].ToList(), binDefinitions[i].numBins, binDefinitions[i].lowerBound, binDefinitions[i].upperBound));
+                try
+                {
+                    histograms.Add(new Histogram(data[i].ToList(), binDefinitions[i].numBins, binDefinitions[i].lowerBound, binDefinitions[i].upperBound));
+                }
+                catch
+                {
+                    histograms = null;
+                    break;
+                }
             }
             return histograms;
         }

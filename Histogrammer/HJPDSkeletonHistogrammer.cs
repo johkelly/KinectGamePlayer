@@ -10,7 +10,7 @@ namespace CSCI598.Proj3.Histogrammer
 {
     public class HJPDSkeletonHistogrammer : SkeletonHistogrammer
     {
-        private const int HJPD_BIN_COUNT = 20;
+        public const int HJPD_BIN_COUNT = 20;
 
         public SortedDictionary<JointType, BinDefinition> binDefinitions { get; set; }
 
