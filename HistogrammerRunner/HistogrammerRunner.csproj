@@ -46,6 +46,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="PipelineConstants.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -54,7 +55,7 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Histogrammer\Histogrammer.csproj">
+    <ProjectReference Include="..\Histogrammer\Histogrammer.csproj">
       <Project>{e855b6c3-7bc1-4d86-8794-b77bf7584aeb}</Project>
       <Name>Histogrammer</Name>
     </ProjectReference>

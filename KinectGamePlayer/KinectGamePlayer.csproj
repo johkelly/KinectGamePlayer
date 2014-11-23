@@ -79,6 +79,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\HistogrammerRunner\HistogrammerRunner.csproj">
+      <Project>{c75c90e6-2882-4254-af40-35384188641a}</Project>
+      <Name>HistogrammerRunner</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Histogrammer\Histogrammer.csproj">
       <Project>{e855b6c3-7bc1-4d86-8794-b77bf7584aeb}</Project>
       <Name>Histogrammer</Name>

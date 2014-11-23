@@ -1,4 +1,5 @@
-﻿using LibSVMsharp;
+﻿using HistogrammerRunner;
+using LibSVMsharp;
 using LibSVMsharp.Helpers;
 using MathNet.Numerics.Statistics;
 using System;
@@ -30,7 +31,7 @@ namespace CSCI598.Proj3
             //    System.Console.WriteLine((hb == null ? "null" : hb.ToString()));
             //    Thread.Sleep(500);
             //}
-            SVMProblem problem = SVMProblemHelper.Load(@"dataset_path.txt");
+            SVMProblem problem = SVMProblemHelper.Load(PipelineConstants.SVMFeaturesFile);
 
             SVMParameter parameter = new SVMParameter();
             parameter.Type = SVMType.C_SVC;

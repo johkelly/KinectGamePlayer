@@ -1,4 +1,5 @@
 ﻿using CSCI598.Proj3.Histogrammer;
+using HistogrammerRunner;
 using LibSVMsharp;
 using LibSVMsharp.Helpers;
 using MathNet.Numerics.Statistics;
@@ -19,7 +20,7 @@ namespace CSCI598.Proj3
             HistogramSharePoint hsp = new HistogramSharePoint();
             SVMKeyboardTriggerer trigger = new SVMKeyboardTriggerer(hsp);
             RawSkeletonReader reader = new RawSkeletonReader();
-            SkeletonFrameWindowProcessor proc = new SkeletonFrameWindowProcessor(hsp, makeRADHistogrammer(RADSkeletonHistogrammer.DEFAULT_JOINT_LIST, @"dataset_bounds_path.txt"));
+            SkeletonFrameWindowProcessor proc = new SkeletonFrameWindowProcessor(hsp, makeRADHistogrammer(RADSkeletonHistogrammer.DEFAULT_JOINT_LIST, PipelineConstants.SVMBoundsFile));
             reader.rawSkeletonReady += proc.handleNewSkeleton;
             Thread t = new Thread(trigger.run);
             t.Start();

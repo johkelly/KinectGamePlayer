@@ -52,7 +52,7 @@ namespace HistogrammerRunner
             List<BinDefinition> binDefinitions;
             List<List<Histogram>> histograms;
             makeHistogramsWithRAD(allSkeletons, RADSkeletonHistogrammer.DEFAULT_JOINT_LIST, out histograms, out binDefinitions);
-            StreamWriter boundsFile = new StreamWriter("train.bounds.txt");
+            StreamWriter boundsFile = new StreamWriter(PipelineConstants.SVMBoundsFile);
             for (int i = 0; i < binDefinitions.Count; ++i)
             {
                 boundsFile.WriteLine(i + " " + binDefinitions[i].lowerBound + " " + binDefinitions[i].numBins + " " + binDefinitions[i].upperBound);
@@ -61,7 +61,7 @@ namespace HistogrammerRunner
             boundsFile.Close();
 
             // Write the histogram attributes to a file
-            StreamWriter trainingFile = new StreamWriter("train.txt");
+            StreamWriter trainingFile = new StreamWriter(PipelineConstants.SVMFeaturesFile);
             for (int instnum = 0; instnum < allSkeletons.Count; ++instnum)
             {
                 int attribute = 1;
