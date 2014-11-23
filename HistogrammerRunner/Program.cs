@@ -23,7 +23,7 @@ namespace HistogrammerRunner
                 System.Console.WriteLine("Read: " + iFile);
                 List<Skeleton> skeletons = SkeletonListSerializer.makeFromeFile(iFile);
                 allSkeletons.Add(skeletons);  
-                if (iFile.Contains("Norm"))
+                if (iFile.Contains("standing"))
                 {
                     classes.Add(0);
                 }
