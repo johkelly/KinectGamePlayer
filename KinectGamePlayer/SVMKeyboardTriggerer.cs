@@ -36,8 +36,8 @@ namespace CSCI598.Proj3
             SVMParameter parameter = new SVMParameter();
             parameter.Type = SVMType.C_SVC;
             parameter.Kernel = SVMKernelType.RBF;
-            parameter.C = 8;
-            parameter.Gamma = .03;
+            parameter.C = 13.9;
+            parameter.Gamma = .029;
             string[] eventTrigger = { "standing", "leftShoulder", "rightShoulder", "leftHip", "rightHip" };
             char[] eventTriggerC = {'s', 'l', 'r', 'L', 'R'};
             
@@ -70,7 +70,7 @@ namespace CSCI598.Proj3
                     //}
                     //System.Console.WriteLine("");
 
-                    System.Windows.Forms.SendKeys.SendWait("" + eventTriggerC[(int)y]);
+                    //System.Windows.Forms.SendKeys.SendWait("" + eventTriggerC[(int)y]);
                 }
             }
 
