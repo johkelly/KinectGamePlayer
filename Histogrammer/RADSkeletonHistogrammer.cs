@@ -10,8 +10,8 @@ namespace CSCI598.Proj3.Histogrammer
 {
     public class RADSkeletonHistogrammer : SkeletonHistogrammer
     {
-        public const int RAD_BIN_COUNT = 20;
-        public static readonly List<JointType> DEFAULT_JOINT_LIST = new List<JointType>() { JointType.ElbowRight, JointType.HandRight, JointType.Head, JointType.HandLeft, JointType.ElbowLeft };
+        public static int RADBinCount = 20;
+        public static readonly List<JointType> DefaultJointList = new List<JointType>() { JointType.ElbowRight, JointType.HandRight, JointType.Head, JointType.HandLeft, JointType.ElbowLeft };
 
         public List<BinDefinition> binDefinitions { get; set; }
         public List<JointType> jointList { get; set; }
@@ -53,14 +53,14 @@ namespace CSCI598.Proj3.Histogrammer
                 {
                     lowerBound = double.MaxValue,
                     upperBound = double.MinValue,
-                    numBins = RAD_BIN_COUNT
+                    numBins = RADBinCount
                 };
                 binDefinitions.Add(extremeBinDef1);
                 BinDefinition extremeBinDef2 = new BinDefinition()
                 {
                     lowerBound = double.MaxValue,
                     upperBound = double.MinValue,
-                    numBins = RAD_BIN_COUNT
+                    numBins = RADBinCount
                 };
                 binDefinitions.Add(extremeBinDef2);
             }

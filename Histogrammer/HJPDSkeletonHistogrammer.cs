@@ -10,7 +10,7 @@ namespace CSCI598.Proj3.Histogrammer
 {
     public class HJPDSkeletonHistogrammer : SkeletonHistogrammer
     {
-        public const int HJPD_BIN_COUNT = 20;
+        public const int HJPDBinCount = 20;
 
         public SortedDictionary<JointType, BinDefinition> binDefinitions { get; set; }
 
@@ -30,7 +30,7 @@ namespace CSCI598.Proj3.Histogrammer
                     BinDefinition binDef = new BinDefinition();
                     binDef.lowerBound = dataset.Value.Min();
                     binDef.upperBound = dataset.Value.Max();
-                    binDef.numBins = HJPD_BIN_COUNT;
+                    binDef.numBins = HJPDBinCount;
                     binDefs[dataset.Key] = binDef;
                 }
                 if (binDefinitions == null)

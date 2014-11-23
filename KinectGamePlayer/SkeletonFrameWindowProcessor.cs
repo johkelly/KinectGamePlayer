@@ -11,7 +11,7 @@ namespace CSCI598.Proj3
 {
     public class SkeletonFrameWindowProcessor
     {
-        public const int WINDOW_SIZE = 10;
+        public static int WindowSize = 10;
         private List<Skeleton> skeletons = new List<Skeleton>();
         private HistogramSharePoint hsp;
         private SkeletonHistogrammer histogrammer;
@@ -24,12 +24,12 @@ namespace CSCI598.Proj3
 
         public void handleNewSkeleton(object sender, Microsoft.Kinect.Skeleton e)
         {
-            while (skeletons.Count >= WINDOW_SIZE)
+            while (skeletons.Count >= WindowSize)
             {
                 skeletons.RemoveAt(skeletons.Count - 1);
             }
             skeletons.Insert(0, e);
-            if (skeletons.Count == WINDOW_SIZE)
+            if (skeletons.Count == WindowSize)
             {
                 hsp.histBatch = histogrammer.processSkeletons(skeletons);
             }

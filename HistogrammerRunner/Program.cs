@@ -51,7 +51,7 @@ namespace HistogrammerRunner
 
             List<BinDefinition> binDefinitions;
             List<List<Histogram>> histograms;
-            makeHistogramsWithRAD(allSkeletons, RADSkeletonHistogrammer.DEFAULT_JOINT_LIST, out histograms, out binDefinitions);
+            makeHistogramsWithRAD(allSkeletons, RADSkeletonHistogrammer.DefaultJointList, out histograms, out binDefinitions);
             StreamWriter boundsFile = new StreamWriter(PipelineConstants.SVMBoundsFile);
             for (int i = 0; i < binDefinitions.Count; ++i)
             {

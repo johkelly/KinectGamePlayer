@@ -56,7 +56,7 @@ namespace CSCI598.Proj3
                         {
                             SVMNode node = new SVMNode();
                             node.Index = count++;
-                            node.Value = histObject[j].Count/SkeletonFrameWindowProcessor.WINDOW_SIZE;
+                            node.Value = histObject[j].Count/SkeletonFrameWindowProcessor.WindowSize;
                             nodes.Add(node);
                         }
                     }
