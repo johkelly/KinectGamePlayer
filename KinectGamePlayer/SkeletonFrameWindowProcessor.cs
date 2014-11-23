@@ -20,6 +20,8 @@ namespace CSCI598.Proj3
         {
             this.hsp = hsp;
             this.histogrammer = histogrammer;
+            RawSkeletonReader reader = new RawSkeletonReader();
+            reader.rawSkeletonReady += this.handleNewSkeleton;
         }
 
         public void handleNewSkeleton(object sender, Microsoft.Kinect.Skeleton e)

@@ -19,12 +19,9 @@ namespace CSCI598.Proj3
         {
             HistogramSharePoint hsp = new HistogramSharePoint();
             SVMKeyboardTriggerer trigger = new SVMKeyboardTriggerer(hsp);
-            RawSkeletonReader reader = new RawSkeletonReader();
             SkeletonFrameWindowProcessor proc = new SkeletonFrameWindowProcessor(hsp, makeRADHistogrammer(RADSkeletonHistogrammer.DefaultJointList, PipelineConstants.SVMBoundsFile));
-            reader.rawSkeletonReady += proc.handleNewSkeleton;
             Thread t = new Thread(trigger.run);
             t.Start();
-            Random r = new Random();
             while (true)
             {
             }
