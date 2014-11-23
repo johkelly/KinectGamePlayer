@@ -11,7 +11,8 @@ namespace CSCI598.Proj3.Histogrammer
     public class RADSkeletonHistogrammer : SkeletonHistogrammer
     {
         public static int RADBinCount = 20;
-        public static readonly List<JointType> DefaultJointList = new List<JointType>() { JointType.ElbowRight, JointType.HandRight, JointType.Head, JointType.HandLeft, JointType.ElbowLeft };
+        public static readonly List<JointType> DefaultJointList = new List<JointType>() { JointType.ElbowRight, JointType.HandRight, JointType.HandLeft, JointType.ElbowLeft };
+        public static readonly JointType DefaultCenterJoint = JointType.Head;
 
         public List<BinDefinition> binDefinitions { get; set; }
         public List<JointType> jointList { get; set; }
@@ -27,7 +28,7 @@ namespace CSCI598.Proj3.Histogrammer
             }
             foreach (Skeleton skeleton in skeletons)
             {
-                SkeletonPoint center = skeleton.Joints[JointType.HipCenter].Position;
+                SkeletonPoint center = skeleton.Joints[DefaultCenterJoint].Position;
                 Point3D centerPoint = new Point3D(center.X, center.Y, center.Z);
                 List<Point3D> points = new List<Point3D>();
                 foreach (JointType jointType in jointList)

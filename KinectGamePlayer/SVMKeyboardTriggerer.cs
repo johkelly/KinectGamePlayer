@@ -70,7 +70,7 @@ namespace CSCI598.Proj3
                     //}
                     //System.Console.WriteLine("");
 
-                    //System.Windows.Forms.SendKeys.SendWait("" + eventTriggerC[(int)y]);
+                    System.Windows.Forms.SendKeys.SendWait("" + eventTriggerC[(int)y]);
                 }
             }
 
