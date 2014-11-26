@@ -72,6 +72,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RawSkeletonReader.cs" />
     <Compile Include="SkeletonFrameWindowProcessor.cs" />
+    <Compile Include="StructDefs.cs" />
     <Compile Include="SVMKeyboardTriggerer.cs" />
   </ItemGroup>
   <ItemGroup>

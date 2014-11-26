@@ -1,0 +1,5 @@
+Right Hip: RRRRRRRRRRRrRRRRRRRR
+Left Hip:  LLLLLLLLLrLLLLrLLLLLLL
+Right Shoulder: rrrrrrrrrrrrrrlrrrr
+Left Shoulder:  llllllllllllllllrrll
+Standing: 30s, no events
