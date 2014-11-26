@@ -18,11 +18,13 @@ namespace HistogrammerRunner
             // Assemble empty skeleton data and histogram data containers with default values
             List<List<Skeleton>> allSkeletons = new List<List<Skeleton>>();
             List<int> classes = new List<int>();
+            // Process all text files in the data directory
             foreach (string iFile in Directory.GetFiles("data", "*.txt"))
             {
                 System.Console.WriteLine("Read: " + iFile);
                 List<Skeleton> skeletons = SkeletonListSerializer.makeFromeFile(iFile);
-                allSkeletons.Add(skeletons);  
+                allSkeletons.Add(skeletons);
+                // Terribly hacky branching logic to discover classes based on file names
                 if (iFile.Contains("standing"))
                 {
                     classes.Add(0);
@@ -49,6 +51,7 @@ namespace HistogrammerRunner
                 }
             }
 
+            // Set up a histogrammer to histogram the skeleton data and write its bounds information to file
             List<BinDefinition> binDefinitions;
             List<List<Histogram>> histograms;
             makeHistogramsWithRAD(allSkeletons, RADSkeletonHistogrammer.DefaultJointList, out histograms, out binDefinitions);
@@ -60,7 +63,7 @@ namespace HistogrammerRunner
             System.Console.WriteLine("Wrote bounds to file");
             boundsFile.Close();
 
-            // Write the histogram attributes to a file
+            // Write the processed histogram data to file
             StreamWriter trainingFile = new StreamWriter(PipelineConstants.SVMFeaturesFile);
             for (int instnum = 0; instnum < allSkeletons.Count; ++instnum)
             {
