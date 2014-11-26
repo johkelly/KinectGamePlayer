@@ -284,10 +284,12 @@ namespace Microsoft.Samples.Kinect.SkeletonBasics
                         if (skel.TrackingState == SkeletonTrackingState.Tracked)
                         {
                             this.DrawBonesAndJoints(skel, dc);
+                            // If we are not currently tracking a skeleton, begin tracking this one.
                             if (currentId == -1 && skel.TrackingState == SkeletonTrackingState.Tracked)
                             {
                                 currentId = skel.TrackingId;
                             }
+                            // If we are tracking skeleton (which we may have just picked up this frame) write its data to file.
                             if (skel.TrackingId == currentId)
                             {
                                 if (recording)
@@ -309,6 +311,7 @@ namespace Microsoft.Samples.Kinect.SkeletonBasics
                     }
                 }
 
+                // Clear the tracking variable if we did not see the user this frame.
                 if (!sawUser)
                 {
                     currentId = -1;
@@ -320,6 +323,11 @@ namespace Microsoft.Samples.Kinect.SkeletonBasics
             }
         }
 
+        /// <summary>
+        /// Writes the given skeleton's raw joint data to file
+        /// [Frame#] [JointID] [X] [Y] [Z]
+        /// </summary>
+        /// <param name="skel"></param>
         private void writeToLog(Skeleton skel)
         {
             foreach (Joint j in skel.Joints)
@@ -456,12 +464,19 @@ namespace Microsoft.Samples.Kinect.SkeletonBasics
             }
         }
 
+        /// <summary>
+        /// Handle the record button being clicked.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void RecordClick(object sender, RoutedEventArgs e)
         {
+            // Not recording, start a new log file
             if (!recording)
             {
                 log = new StreamWriter(directoryName.Text + "/" + FileName.Text + currentInstanceNumber + ".txt");
             }
+            // Recording, close the current log file and update instance number
             else
             {
                 log.Close();
@@ -469,26 +484,46 @@ namespace Microsoft.Samples.Kinect.SkeletonBasics
                 currentFrame = 0;
                 ++currentInstanceNumber;
             }
+            // Toggle state either way
             recording = !recording;
+            // Update visual state
             RecordButton.Background = (recording ? new SolidColorBrush(Colors.Red) : new SolidColorBrush(Colors.Green));
         }
 
+        /// <summary>
+        /// Set up tracker so that the just-previously-recorded log file will be overwritten.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void DiscardLast(object sender, RoutedEventArgs e)
         {
             --currentInstanceNumber;
         }
 
+        /// <summary>
+        /// Reset some tracking state when a new log file name is chosen by the user.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void NewFileName(object sender, RoutedEventArgs e)
         {
             currentFrame = 0;
             currentInstanceNumber = 0;
         }
 
+        /// <summary>
+        /// Create the requested directory to place log files in if it does not already exist.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void directoryChanged(object sender, System.Windows.Controls.TextChangedEventArgs e)
         {
             System.IO.Directory.CreateDirectory(directoryName.Text);
         }
 
+        /// <summary>
+        /// Event handler collector.
+        /// </summary>
         public event PropertyChangedEventHandler PropertyChanged;
     }
 }
