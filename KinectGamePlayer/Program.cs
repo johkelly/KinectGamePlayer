@@ -18,12 +18,18 @@ namespace CSCI598.Proj3
         static void Main(string[] args)
         {
             HistogramSharePoint hsp = new HistogramSharePoint();
-            SVMKeyboardTriggerer trigger = new SVMKeyboardTriggerer(hsp);
+
+            // Launch the skeleton processing side of the pipeline
             SkeletonFrameWindowProcessor proc = new SkeletonFrameWindowProcessor(hsp, makeRADHistogrammer(RADSkeletonHistogrammer.DefaultJointList, PipelineConstants.SVMBoundsFile));
+
+            // Launch the histogram classifying side of the pipeline
+            SVMKeyboardTriggerer trigger = new SVMKeyboardTriggerer(hsp);
             Thread t = new Thread(trigger.run);
             t.Start();
+
             while (true)
             {
+                // Infinite busy loop after setup is done
             }
         }
 

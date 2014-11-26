@@ -7,6 +7,9 @@ using System.Threading.Tasks;
 
 namespace CSCI598.Proj3
 {
+    /// <summary>
+    /// Threadsafe container with which a list of histograms can be safely produced into and consumed from.
+    /// </summary>
     public class HistogramSharePoint
     {
         private Object ListLocker = new Object();

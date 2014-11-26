@@ -7,6 +7,9 @@ using System.Threading.Tasks;
 
 namespace CSCI598.Proj3
 {
+    /// <summary>
+    /// Intercepts Kinect data to process a steady stream of skeleton data
+    /// </summary>
     class RawSkeletonReader
     {
         private KinectSensor sensor;
@@ -16,12 +19,13 @@ namespace CSCI598.Proj3
 
         public RawSkeletonReader()
         {
+            // Attempt to get the active Kinect
             foreach (var potentialSensor in KinectSensor.KinectSensors) {
                 if (potentialSensor.Status == KinectStatus.Connected) {
                     sensor = potentialSensor;
                 }
             }
-
+            // Kinect was acquired, set up for incoming events
             if (null != sensor)
             {
                 sensor.SkeletonStream.Enable();
@@ -30,6 +34,11 @@ namespace CSCI598.Proj3
             }
         }
 
+        /// <summary>
+        /// Safely open the SkeletonFrame and pass it to any consumer listening for new skeleton data
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void handleSkeletonFrame(object sender, SkeletonFrameReadyEventArgs e)
         {
             if (rawSkeletonReady != null)
@@ -53,6 +62,7 @@ namespace CSCI598.Proj3
                             }
                             if (s.TrackingState == SkeletonTrackingState.Tracked &&  s.TrackingId == currentPlayerId)
                             {
+                                // Inform any listeners a new skeleton is ready
                                 rawSkeletonReady(this, s);
                                 return;
                             }

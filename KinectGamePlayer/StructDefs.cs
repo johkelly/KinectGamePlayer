@@ -7,8 +7,8 @@ using System.Threading.Tasks;
 
 namespace CSCI598.Proj3
 {
-    
-
+    // COLLECTION OF STRUCT DEFINITIONS NECESSARY TO FAKE KEYBOARD OUTPUT
+    // SUGGEST NOT STARING AT IT FOR TOO LONG
 
     // Declare the INPUT struct
     [StructLayout(LayoutKind.Sequential)]
