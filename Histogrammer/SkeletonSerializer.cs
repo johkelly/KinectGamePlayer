@@ -8,6 +8,9 @@ using System.Threading.Tasks;
 
 namespace CSCI598.Proj3.Histogrammer
 {
+    /// <summary>
+    /// Convenience class for writing skeleton data to and from files.
+    /// </summary>
     public class SkeletonListSerializer
     {
         public static List<Skeleton> makeFromeFile(string filename)

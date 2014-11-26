@@ -8,6 +8,10 @@ using System.Threading.Tasks;
 
 namespace CSCI598.Proj3.Histogrammer
 {
+    /// <summary>
+    /// The RAD representation for skeleton histograms uses a singular joint as a center, and then an arbitrary list of joints
+    /// around it to form n distance and angle measures, where n is the size of the joint list.
+    /// </summary>
     public class RADSkeletonHistogrammer : SkeletonHistogrammer
     {
         public static int RADBinCount = 20;
@@ -17,6 +21,13 @@ namespace CSCI598.Proj3.Histogrammer
         public List<BinDefinition> binDefinitions { get; set; }
         public List<JointType> jointList { get; set; }
 
+        /// <summary>
+        /// Extract the relevant measures from the raw skeleton data.
+        /// </summary>
+        /// <param name="jointList"></param>
+        /// <param name="skeletons"></param>
+        /// <returns>A list of lists of doubles. Each list represents one measure for RAD (i.e. a distance or an angle)
+        /// and has one entry for each valid frame in the skeleton data</returns>
         public static List<List<double>> prepareData(List<JointType> jointList, List<Skeleton> skeletons)
         {
             List<List<double>> data = new List<List<double>>();
@@ -45,8 +56,15 @@ namespace CSCI598.Proj3.Histogrammer
             return data;
         }
 
+        /// <summary>
+        /// Discover the proper boundaries for the eventual histograms of the skeleton data.
+        /// </summary>
+        /// <param name="jointList"></param>
+        /// <param name="skeletonBatch"></param>
+        /// <returns>A list of BinDefinition objects representing the boundaries of the bins of each metric's histogram.</returns>
         public static List<BinDefinition> binDefinitionsFor(List<JointType> jointList, List<List<Skeleton>> skeletonBatch)
         {
+            // Bin definitions begin at numeric extremes
             List<BinDefinition> binDefinitions = new List<BinDefinition>();
             for (int i = 0; i < jointList.Count; ++i)
             {
@@ -65,6 +83,7 @@ namespace CSCI598.Proj3.Histogrammer
                 };
                 binDefinitions.Add(extremeBinDef2);
             }
+            // Look at the preprocessed data for each list of skeletons and update the bin definitions appropriately
             foreach (List<Skeleton> skeletons in skeletonBatch)
             {
                 List<List<double>> data = prepareData(jointList, skeletons);
@@ -75,9 +94,15 @@ namespace CSCI598.Proj3.Histogrammer
                     binDefinitions[i] = binDef;
                 }
             }
+
             return binDefinitions;
         }
 
+        /// <summary>
+        /// BinDefinitions can be acquired from a static method on the RADSkeletonHistogrammer class.
+        /// </summary>
+        /// <param name="jointList"></param>
+        /// <param name="binDefinitions"></param>
         public RADSkeletonHistogrammer(List<JointType> jointList, List<BinDefinition> binDefinitions)
         {
             this.jointList = jointList;

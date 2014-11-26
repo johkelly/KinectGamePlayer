@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace CSCI598.Proj3.Histogrammer
 {
+    /// <summary>
+    /// Simple wrapper class for 3D vector/point utility calculations
+    /// </summary>
     class Point3D
     {
         public double X { get; set; }
@@ -19,6 +22,11 @@ namespace CSCI598.Proj3.Histogrammer
             Z = z;
         }
 
+        /// <summary>
+        /// Calculate the difference between this point and the other.
+        /// </summary>
+        /// <param name="other"></param>
+        /// <returns>A Point3D representing the straight-line difference between this point and the other</returns>
         public Point3D difference(Point3D other)
         {
             return new Point3D(
@@ -28,13 +36,21 @@ namespace CSCI598.Proj3.Histogrammer
             );
         }
 
-
-
+        /// <summary>
+        /// Calculate the length of the vector represented by this point.
+        /// </summary>
+        /// <returns>The magnitude of the vector represented by this point</returns>
         public double magnitude()
         {
             return Math.Sqrt(X * X + Y * Y + Z * Z);
         }
 
+        /// <summary>
+        /// Calculate the angle formed by this point and 2 others.
+        /// </summary>
+        /// <param name="left"></param>
+        /// <param name="right"></param>
+        /// <returns>The measure (in radians) formed by the angle with this as the center and left and right defining the two legs. 0 if angle is undefined.</returns>
         public double angleMadeWith(Point3D left, Point3D right)
         {
             Point3D leftLeg = left.difference(this);

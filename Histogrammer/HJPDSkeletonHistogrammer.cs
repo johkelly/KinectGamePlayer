@@ -8,17 +8,29 @@ using System.Threading.Tasks;
 
 namespace CSCI598.Proj3.Histogrammer
 {
+    /// <summary>
+    /// HJPDSkeletonHistogrammer has one distance metric for each joint in the skeleton relative to a central joint.
+    /// </summary>
     public class HJPDSkeletonHistogrammer : SkeletonHistogrammer
     {
         public const int HJPDBinCount = 20;
 
         public SortedDictionary<JointType, BinDefinition> binDefinitions { get; set; }
 
+        /// <summary>
+        /// Bin deifnitions can be acquired from a static method on the HJPDSkeletonHistogrammer class.
+        /// </summary>
+        /// <param name="binDefinitions"></param>
         public HJPDSkeletonHistogrammer(SortedDictionary<JointType, BinDefinition> binDefinitions)
         {
             this.binDefinitions = binDefinitions;
         }
 
+        /// <summary>
+        /// Discover the proper histogram bounds for the provided skeleton data.
+        /// </summary>
+        /// <param name="skeletonBatch"></param>
+        /// <returns>A mapping of JointType -> BinDefintion defining the boundaries of the bins for each joint's histogram.</returns>
         public static SortedDictionary<JointType, BinDefinition> binDefinitionsFor(List<List<Skeleton>> skeletonBatch)
         {
             SortedDictionary<JointType, BinDefinition> binDefinitions = null;
@@ -45,6 +57,12 @@ namespace CSCI598.Proj3.Histogrammer
             return binDefinitions;
         }
 
+        /// <summary>
+        /// Convenience method to combine bin definitions.
+        /// </summary>
+        /// <param name="left"></param>
+        /// <param name="right"></param>
+        /// <returns>A mapping of JointType -> BinDefintion, where the lower and upper bounds of each is the lower and higher for each bin between left and right respectively</returns>
         public static SortedDictionary<JointType, BinDefinition> combineDefinitions(SortedDictionary<JointType, BinDefinition> left, SortedDictionary<JointType, BinDefinition> right)
         {
             if (!left.Keys.SequenceEqual(right.Keys))
@@ -67,6 +85,11 @@ namespace CSCI598.Proj3.Histogrammer
             return retval;
         }
 
+        /// <summary>
+        /// Preprocess the data into a mapping of JointType -> distances
+        /// </summary>
+        /// <param name="skeletons"></param>
+        /// <returns>A mapping of JointType -> distances, where each list of distances contains the distance of the associated joint to the central joint at each frame.</returns>
         private static Dictionary<JointType, List<double>> prepareData(List<Skeleton> skeletons)
         {
             // Throw if no skeletons were received

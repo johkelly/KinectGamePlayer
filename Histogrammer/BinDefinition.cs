@@ -7,6 +7,9 @@ using System.Threading.Tasks;
 
 namespace CSCI598.Proj3.Histogrammer
 {
+    /// <summary>
+    /// Plain old data object for storing definitions of bin upper and lower bounds in histograms
+    /// </summary>
     public class BinDefinition
     {
         public double lowerBound { get; set; }
