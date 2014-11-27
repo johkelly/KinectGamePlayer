@@ -2,9 +2,9 @@ KinectGamePlayer
 ================
 
 # Pre-Compilation
-* KinectGamePlayer depends on the Kinect 1.8 libraries. These can acquired via the [SDK](http://www.microsoft.com/en-us/download/details.aspx?id=40278) or the [Runtime](http://www.microsoft.com/en-us/download/details.aspx?id=40277) (untested with the runtime only).
+* KinectGamePlayer depends on the Kinect 1.8 libraries. These can acquired via the [SDK](http://www.microsoft.com/en-us/download/details.aspx?id=40278) or the [Runtime](http://www.microsoft.com/en-us/download/details.aspx?id=40277) (only tested with the SDK).
 * Compilation of KinectGamePlayer depends on the .NET Framework, and was developed using the 4.5 version, available [here](http://msdn.microsoft.com/en-us/vstudio/aa496123.aspx). It may work with lower versions of .NET, but has not been tested.
-* A Kinect 1.8 is necessary, for obvious reasons.
+* A Kinect v1.8 is necessary, for obvious reasons.
 * An installation of Visual Studio is required. The [latest version](http://www.visualstudio.com/products/visual-studio-community-vs), which is also free, is recommended.
 
 # Compilation
