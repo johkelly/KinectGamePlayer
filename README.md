@@ -13,7 +13,7 @@ KinectGamePlayer
 
 # Running
 1. Navigate to KinectGamePlayer/bin/x86/Debug
-2. Copy the two text files from preprocessedData at the root of the repository here
+2. Copy the two text files from preprocessedData at the root of the repository here (You can also use the SkeletonRecorder and HistogrammerRunner programs to record and prepare different data)
 3. You can now run the utility from Visual Studio or via the executable binary KinectGamePlayer.exe in the folder
 
 # Supporting Projects In The Solution
@@ -21,4 +21,3 @@ KinectGamePlayer
 * HistogrammerRunner: Processes raw skeleton logs in the folder data/, expected to be inside the program's current working directory
 * LibSVMSharp (+Demo): Wrappers around the LibSVM library. Included for convenience because the maintainer does not provide readily available binaries or NuGet packages.
 * SkeletonRecorder: Records raw skeleton data from the Kinect into log files which can be processed later into training data. Very little protection against overwriting recorded data, be careful with this one!
-* 
